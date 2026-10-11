@@ -1,0 +1,45 @@
+# Ustawienia serwera Apache / LiteSpeed (większość polskich hostingów).
+# Na GitHub Pages i Netlify ten plik jest ignorowany. Moduły są w <IfModule>, więc ich brak nie psuje strony.
+# Po wgraniu otwórz stronę. Błąd 500 = hosting nie pozwala na którąś linijkę — zakomentuj ją (#) i sprawdź ponownie.
+
+# Własna strona błędu 404 (zrób 404.html w stylu strony).
+# Strona w podfolderze (np. domena.pl/kawiarnia/)? Zmień na: ErrorDocument 404 /kawiarnia/404.html
+ErrorDocument 404 /404.html
+
+# Bez listy plików w folderach bez index.html. Większość hostingów ma to domyślnie;
+# odkomentuj, jeśli po wejściu na domena.pl/img/ widać listę plików.
+# Options -Indexes
+
+# Ukryj pliki robocze, gdyby przypadkiem trafiły na serwer
+<IfModule mod_authz_core.c>
+  <FilesMatch "\.(md|log|bak|zip)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+
+# Przekierowanie na HTTPS — ODKOMENTUJ dopiero, gdy certyfikat SSL działa (https://domena otwiera się bez ostrzeżeń)
+# <IfModule mod_rewrite.c>
+#   RewriteEngine On
+#   RewriteCond %{HTTPS} !=on
+#   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# </IfModule>
+
+# Kompresja tekstu (HTML, CSS, JS, SVG)
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript image/svg+xml application/json
+</IfModule>
+
+# Pamięć podręczna: obrazy i fonty rok, CSS i JS tydzień, HTML zawsze świeży
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/avif "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType text/css "access plus 1 week"
+  ExpiresByType text/javascript "access plus 1 week"
+  ExpiresByType application/javascript "access plus 1 week"
+  ExpiresByType text/html "access plus 0 seconds"
+</IfModule>

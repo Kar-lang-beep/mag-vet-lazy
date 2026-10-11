@@ -1,0 +1,1005 @@
+/* Style strony MAG-VET. Mobile-first: najpierw telefon, potem 768 px i 1280 px. */
+
+/* === TOKENY (kolory, fonty, odstępy) === */
+:root {
+  /* Kolory z logo. Kontrast policzony w BRIEF.md, sekcja 6 */
+  --tlo: #ffffff;
+  --tlo-2: #eef5ec;
+  --tekst: #1e2420;
+  --tekst-drugi: #5c5c5c;
+  --zielen-ciemna: #24691c;
+  --zielen: #42ab34;            /* tylko ozdoby, nigdy tekst (2,96:1) */
+  --magenta: #c8057d;
+  --magenta-ciemna: #a10464;
+  --linia: #cfdccb;
+  --bialy: #ffffff;
+
+  /* Fonty z własnego serwera (css/fonty.css) */
+  --font-naglowki: 'Lora', Georgia, serif;
+  --font-tekst: 'Source Sans 3', system-ui, sans-serif;
+
+  /* Rozmiary tekstu na telefonie */
+  --rozmiar-tekst: 1.0625rem;   /* 17 px */
+  --rozmiar-sredni: 1rem;       /* 16 px, stopka */
+  --rozmiar-podtytul: 1.125rem; /* 18 px, imię lekarki pod h1 */
+  --rozmiar-maly: 0.9375rem;    /* 15 px */
+  --rozmiar-h1: 1.875rem;       /* 30 px */
+  --rozmiar-h2: 1.5rem;         /* 24 px */
+  --rozmiar-h3: 1.1875rem;      /* 19 px */
+  --rozmiar-logo: 1.375rem;     /* 22 px */
+  --rozmiar-godziny: 1.75rem;   /* 28 px */
+  --rozmiar-godziny-male: 1.375rem;
+
+  /* Odstępy co 8 px (+ mały 4 px) */
+  --odstep-0: 0.25rem;
+  --odstep-1: 0.5rem;
+  --odstep-2: 1rem;
+  --odstep-3: 1.5rem;
+  --odstep-4: 2rem;
+  --odstep-5: 3rem;
+  --odstep-6: 4rem;
+  --odstep-sekcji: 3rem;
+  --margines: 1rem;
+
+  /* Szerokości i kształty */
+  --szerokosc: 70rem;           /* 1120 px */
+  --szerokosc-tekstu: 40rem;    /* ok. 65 znaków w wierszu */
+  --zaokraglenie: 6px;
+  --ramka-szyldu: 4px;
+  --klik: 44px;                 /* minimalny rozmiar elementu do kliknięcia */
+  --logo-znak: 40px;            /* serce z logo w nagłówku */
+  --kwadracik: 10px;            /* znacznik przy usługach */
+  --kolko: 15px;                /* kółko na linii dat */
+  --linia-dat: 3px;             /* grubość zielonej linii dat i obwódki kółka */
+  --wysokosc-naglowka: 0px;     /* na telefonie nagłówek się nie przykleja */
+  --obwodka: 3px;               /* obwódka przy Tab */
+  --przycisk-duzy: 3.5rem;      /* 56 px */
+  --szerokosc-zdjecia: 26rem;   /* zdjęcie lekarki na telefonie */
+  --mapa-wysokosc: 12rem;
+  --ikona: 0.875rem;            /* 14 px, ikona „otwiera się w nowej karcie” */
+
+  /* Pasek wizyty na dole ekranu (telefon i tablet) */
+  --wysokosc-paska: 4.5rem;     /* 72 px */
+  --szerokosc-paska: 30rem;
+  --cien-paska: 0 -2px 8px rgb(30 36 32 / 0.1);
+}
+
+/* === PODSTAWY === */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-tekst);
+  font-size: var(--rozmiar-tekst);
+  line-height: 1.6;
+  color: var(--tekst);
+  background: var(--tlo);
+  overflow-wrap: break-word;    /* bardzo długie słowo łamie się tylko, gdy się nie mieści (duża czcionka w telefonie) */
+  /* Stopka zawsze na dole ekranu, nawet gdy treści jest mało (strona 404) */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+figure {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0 0 var(--odstep-2);
+  font-family: var(--font-naglowki);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: var(--rozmiar-h1);
+  line-height: 1.15;
+}
+
+h2 {
+  font-size: var(--rozmiar-h2);
+  color: var(--zielen-ciemna);
+}
+
+h3 {
+  font-size: var(--rozmiar-h3);
+}
+
+p {
+  margin: 0 0 var(--odstep-2);
+}
+
+a {
+  color: var(--magenta);
+  text-underline-offset: 0.15em;
+}
+
+a:hover {
+  color: var(--magenta-ciemna);
+}
+
+/* Wyraźna obwódka przy przechodzeniu klawiszem Tab */
+:focus-visible {
+  outline: var(--obwodka) solid var(--tekst);
+  outline-offset: 2px;
+}
+
+/* Link „Przejdź do treści” – widoczny dopiero po Tab */
+.skip {
+  position: absolute;
+  top: var(--odstep-2);
+  left: var(--odstep-2);
+  z-index: 100;
+  padding: var(--odstep-1) var(--odstep-2);
+  background: var(--tekst);
+  color: var(--bialy);
+  transform: translateY(-300%);   /* schowany nad ekranem */
+}
+
+.skip:focus {
+  color: var(--bialy);
+  transform: none;
+}
+
+/* Na telefonie przewijanie do elementu z fokusem zostawia miejsce na pasek wizyty */
+html {
+  scroll-padding-bottom: var(--wysokosc-paska);
+}
+
+.kontener {
+  width: 100%;
+  max-width: calc(var(--szerokosc) + 2 * var(--margines));
+  margin-inline: auto;
+  /* max(): telefon w poziomie – treść nie wchodzi pod wycięcie ekranu iPhone'a */
+  padding-left: max(var(--margines), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--margines), env(safe-area-inset-right, 0px));
+}
+
+/* Tekst tylko dla czytników ekranu (niewidomi usłyszą np. „otwiera się w nowej karcie”) */
+.dla-czytnika {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Ikona „otwiera się w nowej karcie” przy linkach do HiPets */
+.ikona-zewn {
+  flex: none;
+  width: var(--ikona);
+  height: var(--ikona);
+}
+
+p .ikona-zewn {
+  display: inline;
+  margin-left: var(--odstep-0);
+  vertical-align: -0.1em;
+}
+
+.tylko-szeroki {
+  display: none;
+}
+
+/* Nazwa „MAG-VET” nie może się łamać na „MAG-” i „VET” */
+.bez-lamania {
+  white-space: nowrap;
+}
+
+/* === PRZYCISKI === */
+.przycisk {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--odstep-1);         /* odstęp tekstu od ikony */
+  min-height: var(--klik);
+  padding: var(--odstep-1) var(--odstep-3);
+  border: 2px solid var(--magenta);
+  border-radius: var(--zaokraglenie);
+  background: var(--magenta);
+  color: var(--bialy);
+  font-family: inherit;
+  font-size: var(--rozmiar-tekst);
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.przycisk:hover {
+  border-color: var(--magenta-ciemna);
+  background: var(--magenta-ciemna);
+  color: var(--bialy);
+}
+
+/* Drugi przycisk: zielony obrys */
+.przycisk--obrys {
+  border-color: var(--zielen-ciemna);
+  background: var(--tlo);
+  color: var(--zielen-ciemna);
+}
+
+.przycisk--obrys:hover {
+  border-color: var(--zielen-ciemna);
+  background: var(--zielen-ciemna);
+  color: var(--bialy);
+}
+
+.przycisk--duzy {
+  width: 100%;
+  min-height: var(--przycisk-duzy);
+}
+
+/* Osobne linki (nie w środku zdania) – min. 44 px wysokości do kliknięcia palcem */
+.link-osobny,
+.adres a,
+.stopka__kolumna a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--odstep-1);         /* odstęp tekstu od ikony „nowa karta” */
+  min-height: var(--klik);
+  overflow-wrap: anywhere;      /* długi adres e-mail może się złamać przy dużej czcionce */
+}
+
+.przyciski {
+  display: flex;
+  flex-direction: column;
+  gap: var(--odstep-2);
+  margin-block: var(--odstep-3);
+}
+
+/* === NAGŁÓWEK === */
+.naglowek {
+  background: var(--tlo);
+  border-bottom: 1px solid var(--linia);
+}
+
+/* Telefon: logo i „Zadzwoń” w pierwszym rzędzie, menu w drugim */
+.naglowek__wnetrze {
+  display: flex;
+  flex-wrap: wrap;              /* przy dużej czcionce „Zadzwoń” przechodzi do nowej linii zamiast wystawać */
+  align-items: center;
+  justify-content: space-between;
+  column-gap: var(--odstep-2);
+  padding-top: var(--odstep-1);
+}
+
+.logo {
+  grid-area: logo;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--odstep-1);
+  min-height: var(--klik);
+  text-decoration: none;
+}
+
+.logo__znak {
+  width: var(--logo-znak);
+  height: var(--logo-znak);
+}
+
+.logo__napis {
+  font-size: var(--rozmiar-logo);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Kolory jak w logo; zieleń ciemniejsza, żeby napis był czytelny */
+.logo__mag {
+  color: var(--magenta);
+}
+
+.logo__vet {
+  color: var(--zielen-ciemna);
+}
+
+/* „Zapisz się online” w nagłówku dopiero od 1024 px (niżej jest pasek wizyty) */
+.naglowek__zapisy {
+  grid-area: zapisy;
+  display: none;
+  padding-inline: var(--odstep-2);
+}
+
+.naglowek__telefon {
+  grid-area: telefon;
+  gap: var(--odstep-0);         /* odstęp między „Zadzwoń” a numerem */
+}
+
+.menu {
+  grid-area: menu;
+  flex-basis: 100%;             /* telefon: menu w osobnym wierszu pod logo i „Zadzwoń” */
+  order: 1;
+}
+
+.menu__lista {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu__lista a {
+  display: flex;
+  align-items: center;
+  min-height: var(--klik);
+  padding-inline: var(--odstep-0);
+  color: var(--tekst);
+  font-size: var(--rozmiar-maly);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.menu__lista a:hover {
+  color: var(--magenta);
+  text-decoration: underline;
+}
+
+/* === SEKCJE === */
+.sekcja {
+  padding-block: var(--odstep-sekcji);
+}
+
+.sekcja--tlo {
+  background: var(--tlo-2);
+}
+
+/* Kotwice z menu nie chowają nagłówków pod przyklejonym nagłówkiem */
+section[id] {
+  scroll-margin-top: var(--wysokosc-naglowka);
+}
+
+.tekst p,
+.tekst ul,
+.tekst ol {
+  max-width: var(--szerokosc-tekstu);
+}
+
+.zdjecie img {
+  width: 100%;
+  border-radius: var(--zaokraglenie);
+}
+
+.zdjecie figcaption {
+  margin-top: var(--odstep-1);
+  color: var(--tekst-drugi);
+  font-size: var(--rozmiar-maly);
+}
+
+.uwaga {
+  color: var(--tekst-drugi);
+}
+
+.dwie-kolumny {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--odstep-4);
+}
+
+/* === NA START === */
+.start {
+  padding-top: var(--odstep-4);
+}
+
+.start__siatka {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--odstep-4);
+}
+
+.start__lekarz {
+  color: var(--tekst-drugi);
+  font-size: var(--rozmiar-podtytul);
+}
+
+.start__opis {
+  max-width: var(--szerokosc-tekstu);
+}
+
+.start__podpis {
+  color: var(--tekst-drugi);
+  font-size: var(--rozmiar-maly);
+}
+
+/* === SZYLD (godziny i adres, jak szyld nad wejściem gabinetu) === */
+.szyld {
+  padding: var(--odstep-3);
+  border: var(--ramka-szyldu) solid var(--zielen);
+  border-radius: var(--zaokraglenie);
+  background: var(--tlo);
+}
+
+.szyld__tytul {
+  margin-bottom: var(--odstep-1);
+  color: var(--zielen-ciemna);
+  font-family: var(--font-naglowki);
+  font-size: var(--rozmiar-h3);
+  font-weight: 600;
+}
+
+.godziny {
+  margin: 0;
+}
+
+.godziny__wiersz {
+  padding-block: var(--odstep-1);
+  border-bottom: 1px solid var(--linia);
+}
+
+.godziny__wiersz:last-child {
+  border-bottom: 0;
+}
+
+.godziny dt {
+  font-weight: 600;
+}
+
+.godziny dd {
+  margin: 0;
+}
+
+/* Cyfry tej samej szerokości, żeby godziny stały równo */
+.godziny__czas {
+  color: var(--zielen-ciemna);
+  font-size: var(--rozmiar-godziny-male);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Dzień bez przyjęć (niedziela) */
+.godziny__nieczynne {
+  color: var(--tekst-drugi);
+}
+
+/* „i” między godzinami rano i po południu */
+.godziny__i {
+  margin-inline: var(--odstep-0);
+  color: var(--tekst-drugi);
+}
+
+/* Mały szyld: dzień i godziny w jednym wierszu */
+.szyld--maly .godziny__wiersz {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  column-gap: var(--odstep-2);
+}
+
+.szyld__adres {
+  margin: var(--odstep-2) 0 0;
+  font-weight: 600;
+}
+
+.szyld__linki {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--odstep-3);
+  margin: 0;
+}
+
+.szyld__linki a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--klik);
+  font-weight: 600;
+}
+
+/* Duży szyld: większe cyfry */
+.godziny--duze .godziny__wiersz {
+  padding-block: var(--odstep-2);
+}
+
+.godziny--duze .godziny__czas {
+  font-size: var(--rozmiar-godziny);
+}
+
+.szyld__nagle {
+  margin-top: var(--odstep-2);
+  padding-top: var(--odstep-3);
+  border-top: 2px solid var(--linia);
+}
+
+.szyld__nagle p {
+  margin: 0;
+}
+
+/* === O GABINECIE === */
+.o-gabinecie {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--odstep-3);
+}
+
+.o-gabinecie__naglowek {
+  margin: 0;
+}
+
+.o-gabinecie__zdjecie {
+  max-width: var(--szerokosc-zdjecia);
+}
+
+/* Lista dat: zielona linia i kółka jak końcówka stetoskopu z logo */
+.daty {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-left: var(--linia-dat) solid var(--zielen);
+}
+
+.daty li {
+  position: relative;
+  padding: 0 0 var(--odstep-3) var(--odstep-3);
+}
+
+.daty li:last-child {
+  padding-bottom: 0;
+}
+
+/* Kółko na środku linii: przesunięte w lewo o połowę (kółko + linia) */
+.daty li::before {
+  content: "";
+  position: absolute;
+  top: var(--odstep-0);
+  left: calc((var(--kolko) + var(--linia-dat)) / -2);
+  width: var(--kolko);
+  height: var(--kolko);
+  border: var(--linia-dat) solid var(--zielen);
+  border-radius: 50%;
+  background: var(--tlo-2);
+}
+
+.daty__kiedy {
+  display: block;
+  color: var(--zielen-ciemna);
+  font-weight: 600;
+}
+
+/* === USŁUGI === */
+.uslugi {
+  margin: 0 0 var(--odstep-3);
+  padding: 0;
+  list-style: none;
+}
+
+.uslugi li {
+  position: relative;
+  padding: var(--odstep-2) 0 var(--odstep-2) var(--odstep-4);
+  border-bottom: 1px solid var(--linia);
+}
+
+/* Zielony kwadracik zamiast kropki */
+.uslugi li::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--odstep-2) + var(--odstep-1));
+  left: 0;
+  width: var(--kwadracik);
+  height: var(--kwadracik);
+  background: var(--zielen);
+}
+
+/* Nazwa usługi wygląda jak nagłówek h3, ale to zwykły element listy (lepiej dla czytników ekranu) */
+.uslugi__nazwa {
+  display: block;
+  font-family: var(--font-naglowki);
+  font-size: var(--rozmiar-h3);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.uslugi__opis {
+  display: block;
+  margin-top: var(--odstep-0);
+}
+
+/* === NAJCZĘSTSZE PYTANIA === */
+.pytania {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--odstep-4);
+}
+
+.pytanie h3 {
+  margin-bottom: var(--odstep-1);
+}
+
+.pytanie p {
+  max-width: var(--szerokosc-tekstu);
+  margin: 0;
+}
+
+/* === KONTAKT === */
+.adres {
+  font-style: normal;
+}
+
+.adres__nazwa {
+  font-weight: 600;
+}
+
+.adres a {
+  font-weight: 600;
+}
+
+/* Wiersz z linkiem ma już 44 px wysokości, więc bez dodatkowego marginesu */
+.adres__wiersz {
+  margin: 0;
+}
+
+/* Mapa po kliknięciu (komponent mapa.*) */
+.mapa {
+  display: grid;
+  gap: var(--odstep-2);
+  align-content: center;
+  justify-items: start;
+  min-height: var(--mapa-wysokosc);
+  padding: var(--odstep-3);
+  border: 1px solid var(--linia);
+  border-radius: var(--zaokraglenie);
+  background: var(--tlo);       /* sekcja kontaktu ma jasnozielone tło */
+}
+
+.mapa__info {
+  margin: 0;
+}
+
+/* .mapa i .przycisk ustawiają display, więc atrybut hidden trzeba obsłużyć wprost */
+.mapa[hidden],
+.mapa__przycisk[hidden] {
+  display: none;
+}
+
+.mapa__ramka {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: 0;
+  border-radius: var(--zaokraglenie);
+}
+
+/* === STOPKA === */
+.stopka {
+  padding-block: var(--odstep-5) var(--odstep-3);
+  background: var(--zielen-ciemna);
+  color: var(--bialy);
+  font-size: var(--rozmiar-sredni);
+}
+
+.stopka a {
+  color: var(--bialy);
+}
+
+.stopka a:hover {
+  color: var(--bialy);
+  text-decoration-thickness: 2px;
+}
+
+.stopka :focus-visible {
+  outline-color: var(--bialy);
+}
+
+.stopka__siatka {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--odstep-3);
+}
+
+.stopka__kolumna {
+  margin: 0;
+  padding: 0;
+  font-style: normal;
+}
+
+.stopka__kolumna p {
+  margin: 0 0 var(--odstep-1);
+}
+
+.stopka__nazwa {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--odstep-0);  /* flex usuwa spację przed „MAG-VET”, więc odstęp daje gap */
+  min-height: var(--klik);      /* jak wiersze z linkami obok – kolumny startują na tej samej wysokości */
+  font-weight: 600;
+}
+
+.stopka__media {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--odstep-4);
+  list-style: none;
+}
+
+.stopka__media a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--odstep-1);
+  min-height: var(--klik);
+  font-weight: 600;
+}
+
+/* === PASEK WIZYTY (telefon i tablet) === */
+/* sticky, nie fixed: na końcu strony pasek sam staje nad stopką i niczego nie zasłania na stałe */
+.pasek-wizyty {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  padding-top: var(--odstep-1);
+  padding-bottom: calc(var(--odstep-1) + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--linia);
+  background: var(--tlo);
+  box-shadow: var(--cien-paska);
+  /* Pokazywanie: najpierw widoczny, potem wjeżdża */
+  transition: transform 200ms ease-out, visibility 0s;
+}
+
+.pasek-wizyty[hidden] {
+  display: none;
+}
+
+/* Schowany: zjeżdża w dół, a dopiero po animacji znika dla Taba i czytnika */
+.pasek-wizyty--schowany {
+  visibility: hidden;
+  transform: translateY(100%);
+  transition: transform 200ms ease-out, visibility 0s 200ms;
+}
+
+/* Gdy ktoś ma fokus w pasku, pasek się nie chowa */
+.pasek-wizyty:focus-within {
+  visibility: visible;
+  transform: none;
+}
+
+.pasek-wizyty__wnetrze {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--odstep-1);
+  max-width: calc(var(--szerokosc-paska) + 2 * var(--margines));
+}
+
+.pasek-wizyty__przycisk {
+  flex-direction: column;
+  gap: 0;
+  min-height: var(--przycisk-duzy);
+  padding-inline: var(--odstep-1);
+}
+
+.pasek-wizyty__podpis {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--odstep-0);
+  font-size: var(--rozmiar-maly);
+  font-weight: 400;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pasek-wizyty,
+  .pasek-wizyty--schowany {
+    transition: none;
+  }
+}
+
+/* Telefon w poziomie: niski ekran, więc pasek bez podpisów */
+@media (max-height: 30rem) {
+  .pasek-wizyty__podpis {
+    display: none;
+  }
+
+  .pasek-wizyty__przycisk {
+    min-height: var(--klik);
+  }
+}
+
+/* === STRONA 404 === */
+.blad404 {
+  padding-block: var(--odstep-6);
+}
+
+.blad404__szyld {
+  max-width: var(--szerokosc-tekstu);
+  margin-inline: auto;
+}
+
+/* === TABLET: od 768 px === */
+@media (min-width: 768px) {
+  :root {
+    --margines: 1.5rem;
+    --odstep-sekcji: 4rem;
+  }
+
+  /* Nagłówek w jednym rzędzie (przyklejony dopiero od 1024 px – niżej jest pasek wizyty) */
+  .naglowek__wnetrze {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: "logo menu telefon";
+    column-gap: var(--odstep-4);
+    padding-block: var(--odstep-1);
+  }
+
+  .menu__lista {
+    justify-content: center;
+    column-gap: var(--odstep-2);
+  }
+
+  .przyciski {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .przycisk--duzy {
+    width: auto;
+  }
+
+  .start__siatka {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: start;
+  }
+
+  .dwie-kolumny {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--odstep-5);
+    align-items: start;
+  }
+
+  /* Zdjęcie lekarki po lewej, nagłówek i tekst po prawej */
+  .o-gabinecie {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "zdjecie naglowek"
+      "zdjecie tekst";
+    column-gap: var(--odstep-5);
+    align-items: start;
+  }
+
+  .o-gabinecie__naglowek {
+    grid-area: naglowek;
+  }
+
+  .o-gabinecie__zdjecie {
+    grid-area: zdjecie;
+    max-width: none;
+  }
+
+  .o-gabinecie__tekst {
+    grid-area: tekst;
+  }
+
+  .pytania {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--odstep-5);
+  }
+
+  /* Kontakt: dane i zdjęcie szyldu obok siebie, mapa pod spodem na całą szerokość */
+  .dwie-kolumny--kontakt .mapa {
+    grid-column: 1 / -1;
+  }
+
+  /* Szeroka mapa po kliknięciu nie może być za wysoka */
+  .mapa__ramka {
+    aspect-ratio: 16 / 9;
+  }
+
+  .stopka__siatka {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* === OD 1024 px: przyklejony nagłówek z oboma przyciskami zamiast paska wizyty ===
+   (dodatkowy próg poza 768/1280 – projektant: na 768 px oba przyciski nie mieszczą się w nagłówku) */
+@media (min-width: 1024px) {
+  :root {
+    --wysokosc-naglowka: 5rem;
+  }
+
+  html {
+    scroll-padding-bottom: 0;
+  }
+
+  .naglowek {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .naglowek__wnetrze {
+    grid-template-columns: auto 1fr auto auto;
+    grid-template-areas: "logo menu zapisy telefon";
+    column-gap: var(--odstep-3);
+  }
+
+  .naglowek__zapisy {
+    display: inline-flex;
+  }
+
+  .pasek-wizyty {
+    display: none;
+  }
+}
+
+/* === KOMPUTER: od 1280 px === */
+@media (min-width: 1280px) {
+  :root {
+    --rozmiar-tekst: 1.125rem;    /* 18 px */
+    --rozmiar-h1: 2.75rem;        /* 44 px */
+    --rozmiar-h2: 2rem;           /* 32 px */
+    --rozmiar-h3: 1.3125rem;      /* 21 px */
+    --rozmiar-godziny: 2.25rem;   /* 36 px */
+    --odstep-sekcji: 5.5rem;
+  }
+
+  body {
+    line-height: 1.65;
+  }
+
+  .start {
+    padding-top: var(--odstep-6);
+  }
+
+  .start__siatka {
+    gap: var(--odstep-6);
+  }
+
+  /* Numer telefonu w nagłówku dopiero na szerokim ekranie (na 768 px menu by się zawinęło) */
+  .tylko-szeroki {
+    display: inline;
+  }
+
+  .menu__lista {
+    column-gap: var(--odstep-3);
+  }
+
+  /* Duży szyld: dzień po lewej, godziny po prawej (na 768 px kolumna jest za wąska) */
+  .godziny--duze .godziny__wiersz {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    column-gap: var(--odstep-3);
+  }
+
+  /* Kontakt: dane po lewej (węższa kolumna), mapa po prawej */
+  .dwie-kolumny--kontakt {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+
+  .mapa__ramka {
+    aspect-ratio: 21 / 9;
+  }
+}
+
+/* === WYDRUK === */
+@media print {
+  .naglowek {
+    position: static;
+  }
+
+  .skip,
+  .menu,
+  .pasek-wizyty,
+  .mapa {
+    display: none;
+  }
+}
