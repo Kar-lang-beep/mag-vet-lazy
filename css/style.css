@@ -463,6 +463,7 @@ section[id] {
 
 /* Cyfry tej samej szerokości, żeby godziny stały równo */
 .godziny__czas {
+  line-height: 1.25;            /* dwa przedziały godzin blisko siebie */
   color: var(--zielen-ciemna);
   font-size: var(--rozmiar-godziny-male);
   font-weight: 600;
@@ -474,10 +475,16 @@ section[id] {
   color: var(--tekst-drugi);
 }
 
-/* „i” między godzinami rano i po południu */
-.godziny__i {
-  margin-inline: var(--odstep-0);
-  color: var(--tekst-drugi);
+/* Dwa przedziały godzin (rano i po południu) jeden pod drugim, wyrównane do prawej */
+.godziny__zakresy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+/* Duży szyld na telefonie: dzień nad godzinami, więc godziny do lewej */
+.godziny--duze .godziny__zakresy {
+  align-items: flex-start;
 }
 
 /* Mały szyld: dzień i godziny w jednym wierszu */
@@ -620,7 +627,13 @@ section[id] {
 .pytania {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--odstep-4);
+  gap: var(--odstep-3);
+}
+
+/* Każde pytanie to wiersz oddzielony cienką linią (od 768 px: pytanie po lewej, odpowiedź po prawej) */
+.pytanie {
+  padding-top: var(--odstep-3);
+  border-top: 1px solid var(--linia);
 }
 
 .pytanie h3 {
@@ -888,9 +901,16 @@ section[id] {
     grid-area: tekst;
   }
 
-  .pytania {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* Pytanie i odpowiedź obok siebie – te same proporcje co w „Kontakt” (5:7) */
+  .pytanie {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     column-gap: var(--odstep-5);
+    align-items: baseline;
+  }
+
+  .pytanie h3 {
+    margin-bottom: 0;
   }
 
   /* Kontakt: dane i zdjęcie szyldu obok siebie, mapa pod spodem na całą szerokość */
@@ -978,6 +998,10 @@ section[id] {
     grid-template-columns: 1fr auto;
     align-items: baseline;
     column-gap: var(--odstep-3);
+  }
+
+  .godziny--duze .godziny__zakresy {
+    align-items: flex-end;
   }
 
   /* Kontakt: dane po lewej (węższa kolumna), mapa po prawej */
