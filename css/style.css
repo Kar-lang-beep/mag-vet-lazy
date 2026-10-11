@@ -61,7 +61,6 @@
   /* Pasek wizyty na dole ekranu (telefon i tablet) */
   --wysokosc-paska: 4.5rem;     /* 72 px */
   --szerokosc-paska: 30rem;
-  --cien-paska: 0 -2px 8px rgb(30 36 32 / 0.1);
 }
 
 /* === PODSTAWY === */
@@ -717,7 +716,7 @@ section[id] {
 .stopka__siatka {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--odstep-3);
+  gap: var(--odstep-2);
 }
 
 .stopka__kolumna {
@@ -726,16 +725,17 @@ section[id] {
   font-style: normal;
 }
 
+/* Każdy wiersz stopki ma 44 px (jak linki) – równe odstępy i wyrównane kolumny */
 .stopka__kolumna p {
-  margin: 0 0 var(--odstep-1);
-}
-
-.stopka__nazwa {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  column-gap: var(--odstep-0);  /* flex usuwa spację przed „MAG-VET”, więc odstęp daje gap */
-  min-height: var(--klik);      /* jak wiersze z linkami obok – kolumny startują na tej samej wysokości */
+  column-gap: var(--odstep-0);  /* flex usuwa spację przed linkiem, więc odstęp daje gap */
+  min-height: var(--klik);
+  margin: 0;
+}
+
+.stopka__nazwa {
   font-weight: 600;
 }
 
@@ -764,7 +764,6 @@ section[id] {
   padding-bottom: calc(var(--odstep-1) + env(safe-area-inset-bottom, 0px));
   border-top: 1px solid var(--linia);
   background: var(--tlo);
-  box-shadow: var(--cien-paska);
   /* Pokazywanie: najpierw widoczny, potem wjeżdża */
   transition: transform 200ms ease-out, visibility 0s;
 }
@@ -936,6 +935,7 @@ section[id] {
   }
 
   html {
+    scroll-padding-top: var(--wysokosc-naglowka);   /* fokus nie chowa się pod przyklejonym nagłówkiem */
     scroll-padding-bottom: 0;
   }
 
