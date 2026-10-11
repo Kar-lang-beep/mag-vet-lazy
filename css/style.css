@@ -140,6 +140,11 @@ a:hover {
   outline-offset: 2px;
 }
 
+/* Treść dostaje fokus po „Przejdź do treści” (tabindex="-1"); to nie przycisk, więc bez obwódki */
+main:focus {
+  outline: none;
+}
+
 /* Link „Przejdź do treści” – widoczny dopiero po Tab */
 .skip {
   position: absolute;
