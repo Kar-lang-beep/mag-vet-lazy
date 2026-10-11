@@ -1,4 +1,24 @@
-// Skrypt strony MAG-VET. Strona działa też bez niego – skrypt dodaje tylko mapę po kliknięciu.
+// Skrypt strony MAG-VET. Strona działa też bez niego – skrypt dodaje mapę po kliknięciu,
+// pasek wizyty na telefonie i powrót na górę po odświeżeniu.
+
+// === PO ODŚWIEŻENIU STRONA WRACA NA GÓRĘ ===
+// Przeglądarka po odświeżeniu wraca w miejsce, gdzie ktoś był (albo do sekcji z #adresu po kliknięciu w menu).
+// Tylko przy odświeżeniu (reload) przewijamy na górę i usuwamy #sekcja z adresu.
+// Zwykłe wejście z linku do sekcji (np. index.html#kontakt) nadal przenosi do tej sekcji.
+function naGorePoOdswiezeniu() {
+  const nawigacja = performance.getEntriesByType('navigation')[0];
+  if (!nawigacja || nawigacja.type !== 'reload') return;
+
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+
+  const naGore = () => window.scrollTo(0, 0);
+  naGore();
+  // Niektóre przeglądarki przywracają pozycję dopiero po wczytaniu obrazów – wtedy przewijamy jeszcze raz
+  window.addEventListener('load', () => requestAnimationFrame(naGore), { once: true });
+}
+
+naGorePoOdswiezeniu();
 
 // === MAPA PO KLIKNIĘCIU (komponent mapa.js) ===
 // Wstawia mapę Google (iframe) dopiero, gdy ktoś kliknie „Pokaż mapę”.
