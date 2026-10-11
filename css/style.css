@@ -475,16 +475,16 @@ section[id] {
   color: var(--tekst-drugi);
 }
 
-/* Dwa przedziały godzin (rano i po południu) jeden pod drugim, wyrównane do prawej */
-.godziny__zakresy {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+/* Kropka między godzinami rano i po południu („9-12 · 15-19”); czytnik ekranu słyszy „i” */
+.godziny__separator {
+  margin-inline: var(--odstep-0);
+  color: var(--tekst-drugi);
+  font-size: var(--rozmiar-godziny-male);
+  font-weight: 400;
 }
 
-/* Duży szyld na telefonie: dzień nad godzinami, więc godziny do lewej */
-.godziny--duze .godziny__zakresy {
-  align-items: flex-start;
+.godziny--duze .godziny__separator {
+  font-size: var(--rozmiar-godziny);
 }
 
 /* Mały szyld: dzień i godziny w jednym wierszu */
@@ -998,10 +998,6 @@ section[id] {
     grid-template-columns: 1fr auto;
     align-items: baseline;
     column-gap: var(--odstep-3);
-  }
-
-  .godziny--duze .godziny__zakresy {
-    align-items: flex-end;
   }
 
   /* Kontakt: dane po lewej (węższa kolumna), mapa po prawej */
